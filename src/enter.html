@@ -3,6 +3,7 @@
 <body>
 
 <form action="drawing">
+<p> <strong> Sean Cowan 13325878 </strong> </p>
 <p> Enter in your drawing in the form [(transfrom, shape,[styles])]
 for example
 </p>
@@ -19,7 +20,9 @@ for example
     [(Compose (Compose (Translate (Vector 10.0 10.0)) (Translate (Vector 20.0 20.0))) (Scale (Vector 6.0 2.0)),Square,[StrokeWidth 3,FillColour "green"]),(Translate (Vector 77.0 77.0),Circle,[StrokeWidth 0,StrokeColour "yellow",FillColour "purple"])]
 </p>
   <br>
-  <input type="text" name="drawing" value="Scale 10 10">
+  <textarea rows="10" cols="80" type="text" name="drawing" >
+    [(Compose (Scale (Vector 3.0 3.0)) (Translate (Vector 40.0 40.0)),Square,[StrokeWidth 6,FillColour "red"])]
+  </textarea>
   <br>
   <input type="submit" value="Submit">
 </form>

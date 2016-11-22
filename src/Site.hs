@@ -13,7 +13,7 @@ import Data.Monoid (mconcat)
 
 runSite =
     S.scotty 3000 $ do
-  S.get "/xss" $ S.file "./src/enter.html"
+  S.get "/" $ S.file "./src/enter.html"
   S.get "/drawing" $ do
     draw <- S.param "drawing"
     S.html $ L.pack $ Shape.convert (read draw)

@@ -10,10 +10,7 @@ import qualified Text.Blaze.Svg11 as S
 import qualified Text.Blaze.Svg11.Attributes as A
 import Text.Blaze.Svg.Renderer.String (renderSvg)
 
--- maybe you need to convert all the shapes into a good format (position, scale, stroke width etc) and then use your new data
--- type for conversion to blaze-svg
-
--- Utilities
+-- I created an image datatype, a stlye typeclass and modified the drawing definition to include a list of styles
 data Img = Img {  shape :: Shape
                 , position :: Vector
                 , size :: Double
@@ -64,6 +61,7 @@ applyTransforms (Compose t0 t1) image =  applyTransforms t0 (pickTransform t1 im
 applyTransforms t image = pickTransform t image
 
 
+-- This takes a tuple froma  drawing and converts it to an image
 conv :: (Transform, Shape, [Style]) -> Img
 conv (t, shape, styles) =  applyStyle styles $ modifyShape shape $ applyTransforms t blank
   where blank = Img{shape = circle, position = vector 1 1, size = 10,
@@ -72,6 +70,8 @@ conv (t, shape, styles) =  applyStyle styles $ modifyShape shape $ applyTransfor
 convertDrawings :: Drawing -> [Img]
 convertDrawings d = map conv d
 
+-- This takes an image and converts it to an svg
+-- long and unwieldly sticking together of svg attributes easy to extend though
 imageToBlaze :: Img -> S.Svg
 imageToBlaze (Img Circle (Vector px py) si r e f g) = S.circle ! A.cx  (S.stringValue (show px)) ! A.cy (S.stringValue (show py)) ! A.r (S.stringValue (show ( si/2))) ! A.strokeWidth (S.stringValue (show f)) ! A.stroke (S.stringValue e) ! A.fill (S.stringValue g)
 imageToBlaze (Img Square (Vector px py) si r e f g) = S.rect ! A.x (S.stringValue (show px)) ! A.y (S.stringValue (show py)) ! A.width (S.stringValue (show si)) ! A.height (S.stringValue (show si)) ! A.strokeWidth (S.stringValue (show f)) ! A.stroke (S.stringValue e) ! A.fill (S.stringValue g)
@@ -79,6 +79,8 @@ imageToBlaze (Img Square (Vector px py) si r e f g) = S.rect ! A.x (S.stringValu
 drawingToSvgArray :: Drawing -> [S.Svg]
 drawingToSvgArray ds = map imageToBlaze $ convertDrawings ds
 
+-- this converts a drawing to a string representation of a blaze svg,
+-- ready to be used to the server with scotty and blaze
 convert :: Drawing -> String
 convert ds = renderSvg $ S.docTypeSvg ! A.viewbox "0 0 400 400" $ foldr1 (>>) (drawingToSvgArray ds)
 --
@@ -177,11 +179,14 @@ type Drawing = [(Transform,Shape, [Style])]
 -- maxnorm :: Point -> Double
 -- maxnorm (Vector x y ) = max (abs x) (abs y)
 
-s1 = (scale (point 10 10), circle, [StrokeWidth 2, StrokeColour "blue", FillColour "red"])
+s1 = (translate (vector 20 20) <+> scale (point 2 2) <+> (rotate 20), square, [StrokeWidth 2, StrokeColour "blue", FillColour "red"])
 s2 = (translate (point 10 10) <+> translate (vector 20 20) <+> scale (vector 6 2), square, [StrokeWidth 3, FillColour "green"])
 s3 = (translate (vector 77 77), circle, [StrokeWidth 0, StrokeColour "yellow", FillColour "purple"])
 s4 = (translate (vector 30 30) <+> scale (point 10 10), square, [FillColour "orange"])
 s5 = (scale (point 10 10), circle, [StrokeWidth 6, FillColour "red"])
+s6 = (scale (point 3 3) <+> translate (vector 40 40), square, [StrokeWidth 6, FillColour "red"])
 
 d1 = [s1, s2, s3, s4, s5]
 d2 = [s2, s3]
+d3 = [s1]
+d4 = [s6]
