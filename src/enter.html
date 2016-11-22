@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<form action="drawing">
+<p> Enter in your drawing in the form [(transfrom, shape,[styles])]
+for example
+</p>
+<h2> Example shape 1: </h2>
+<p> S square that has been translated by 10 and then 20 on the x and y axis, scaled by the sum of the vector arguments, with a stroke width of 2, a stroke coloured purple and the inside filled with the colour pink.
+<p> [(Compose (Compose (Translate (Vector 10.0 10.0)) (Translate (Vector 20.0 20.0))) (Scale (Vector 20 15.0)),Square,[StrokeWidth 3, StrokeColour "purple",FillColour "pink"])] </p>
+
+<h2> example shape 2: </h2>
+<p>
+[(Scale (Vector 10.0 10.0),Circle,[StrokeWidth 2,StrokeColour "blue",FillColour "red"]),(Compose (Compose (Translate (Vector 10.0 10.0)) (Translate (Vector 200.0 5.0))) (Scale (Vector 6.0 2.0)),Square,[StrokeWidth 3,FillColour "green"]),(Translate (Vector 77.0 77.0),Circle,[StrokeWidth 0,StrokeColour "yellow",FillColour "purple"]),(Compose (Translate (Vector 30.0 30.0)) (Scale (Vector 10.0 10.0)),Square,[FillColour "orange"]),(Scale (Vector 10.0 10.0),Circle,[StrokeWidth 6,FillColour "red"])]</p>
+
+<h2> example shape 3: </h2>
+<p>
+    [(Compose (Compose (Translate (Vector 10.0 10.0)) (Translate (Vector 20.0 20.0))) (Scale (Vector 6.0 2.0)),Square,[StrokeWidth 3,FillColour "green"]),(Translate (Vector 77.0 77.0),Circle,[StrokeWidth 0,StrokeColour "yellow",FillColour "purple"])]
+</p>
+  <br>
+  <input type="text" name="drawing" value="Scale 10 10">
+  <br>
+  <input type="submit" value="Submit">
+</form>
+</body>
+</html>
